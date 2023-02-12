@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "NX_BRANCH=main npx nx run-many --parallel --target=serve --projects=employee-management,auth-api",
+    "start:all": "NX_BRANCH=main npx nx run-many --parallel --target=serve --projects=employee-management,auth-api",
     "build": "NX_BRANCH=main npx nx run-many --parallel --target=build --projects=employee-management,auth-api",
     "start:api": "NODE_ENV=production node dist/apps/auth-api/main.js",
     "start:emp": "NODE_ENV=production node dist/apps/employee-management/main.js"
