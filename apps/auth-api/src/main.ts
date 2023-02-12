@@ -5,18 +5,18 @@
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { MicroserviceOptions } from '@nestjs/microservices';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
-  const port = process.env.PORT || 3334;
+  const port = process.env.PORT || '3334';
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
-      transport: 0, // TCP
+      transport: Transport.TCP,
       options: {
-        port
+        port: parseInt(port)
       }
     },
   );

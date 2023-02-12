@@ -16,10 +16,11 @@ export class AppController {
   @Post('/signup')
   @ApiOperation({ summary: 'Create user' })
   createUser(@Body() user: CreateUser){
-    return this.appService.createUser(user);
+    this.appService.createUser(user);
   }
 
   @Post('/signIn')
+  @ApiOperation({ summary: 'login with user' })
   signIn(@Body() user: CreateUser){
     return this.appService.signIn(user);
   }

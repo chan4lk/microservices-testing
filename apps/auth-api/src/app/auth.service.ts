@@ -1,5 +1,7 @@
 import { User } from '@microservices-testing/shared';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 class AuthService {
   private users: { userName: string; password: string; created: Date }[] = [];
 
@@ -18,6 +20,7 @@ class AuthService {
   }
 
   signIn(userName: string, password: string): Promise<User> {
+    console.log(this.users);
     const user = this.users
       .filter((x) => x.userName === userName && x.password === password)
       .map((x) => ({ userName: x.userName, created: x.created }))

@@ -2,6 +2,9 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateUser {
     @ApiProperty()
+    id: string;
+
+    @ApiProperty()
     userName: string;
 
     @ApiProperty()
@@ -11,7 +14,7 @@ export class CreateUser {
 export class User {
     @ApiProperty()
     userName: string;
-    
+
     @ApiProperty()
     created: Date;
 }

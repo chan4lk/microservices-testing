@@ -12,7 +12,7 @@ export class AppService {
   }
 
   createUser(user: CreateUser) {
-    return this.client.send<User>('create_user', JSON.stringify(user));
+    return this.client.emit('create_user', user);
   }
 
   signIn(user: CreateUser) {
