@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "NX_BRANCH=main npx nx run-many --target=serve --projects=employee-management,auth-api",
-    "build": "NX_BRANCH=main npx nx run-many --target=build --projects=employee-management,auth-api"
+    "start": "NX_BRANCH=main npx nx run-many --parallel --target=serve --projects=employee-management,auth-api",
+    "build": "NX_BRANCH=main npx nx run-many --parallel --target=build --projects=employee-management,auth-api"
   },
   "private": true,
   "dependencies": {
