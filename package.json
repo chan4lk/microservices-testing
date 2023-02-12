@@ -2,7 +2,10 @@
   "name": "microservices-testing",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start": "NX_BRANCH=main npx nx serve employee-management",
+    "build": "NX_BRANCH=main npx nx run employee-management:build"
+  },
   "private": true,
   "dependencies": {
     "@nestjs/common": "^9.0.0",
