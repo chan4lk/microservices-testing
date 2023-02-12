@@ -1,3 +1,4 @@
+import { CreateUser, User } from '@microservices-testing/shared';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
@@ -5,17 +6,17 @@ import { ClientProxy } from '@nestjs/microservices';
 export class AppService {
 
   /**
-   *
+   * The app service.
    */
-  constructor(@Inject('AUTH_SERVICE') private client: ClientProxy) {
+  constructor(@Inject('AUTH_SERVICE') private readonly client: ClientProxy) {
   }
 
-  createUser(user: { userName: string; password: string; }) {
-    return this.client.send<{ userName: string; created: Date; }>('create_user', user);
+  createUser(user: CreateUser) {
+    return this.client.send<User>('create_user', JSON.stringify(user));
   }
 
-  signIn(user: { userName: string; password: string; }) {
-    return this.client.send<{ userName: string; created: Date; }>('sign_in', user);
+  signIn(user: CreateUser) {
+    return this.client.send<User>('sign_in', user);
   }
 
   getData(): { message: string } {
