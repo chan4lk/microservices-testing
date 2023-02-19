@@ -24,7 +24,7 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.1.x'
-          
+
       - name: Install dependencies
         run: |
           cd tests/specflow/MicroServices.Testing
@@ -35,7 +35,7 @@ jobs:
           cd tests/specflow/MicroServices.Testing
           dotnet build --configuration Release --no-restore
           
-      - uses: actions/cryptic-wizard/run-specflow-tests@v1.3.1
+      - uses: cryptic-wizard/run-specflow-tests@v1.3.1
         with:
           test-assembly-path: tests/specflow/MicroServices.Testing/bin/Release/net6.0
           test-assembly-dll: MicroServices.Testing.dll
