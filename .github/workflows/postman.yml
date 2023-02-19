@@ -6,7 +6,7 @@ on: push
 env:
   TEST_DLL: "tests/specflow/MicroServices.Testing/bin/Debug/net6.0/MicroServices.Testing.dll"
   TEST_JSON: "tests/specflow/MicroServices.Testing/bin/Debug/net6.0/TestExecution.json"
-  TEST_OUTPUT: "tests/specflow/MicroServices.Testing/bin/Debug/net6.0/MicroServices.Testing.html"
+  TEST_OUTPUT: "MicroServices.Testing.html"
   Configuration: "Debug"
 
 jobs:
@@ -55,4 +55,4 @@ jobs:
         with:
           name: SpecflowLogs
           path: |
-            ${{ env.TEST_OUTPUT}}
+            tests/specflow/MicroServices.Testing/${{ env.TEST_OUTPUT}}
