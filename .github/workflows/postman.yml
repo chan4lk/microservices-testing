@@ -45,7 +45,7 @@ jobs:
       - name: Test
         run: |
           cd tests/specflow/MicroServices.Testing
-          dotnet test --no-build --configuration ${{ env.Configuration }}
+          dotnet test --no-build --configuration ${{ env.Configuration }} -l:trx
          
       - name: Test Report
         if: success() || failure()
@@ -60,3 +60,10 @@ jobs:
           name: SpecflowLogs
           path: |
             ${{ env.TEST_OUTPUT}}
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: |
+            tests/specflow/MicroServices.Testing/**/*.trx
