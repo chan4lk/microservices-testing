@@ -59,4 +59,4 @@ jobs:
         with:
           name: SpecflowLogs
           path: |
-            **/${{ env.TEST_OUTPUT}}
+            ${{ env.TEST_OUTPUT}}
