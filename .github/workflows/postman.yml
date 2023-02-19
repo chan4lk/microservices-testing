@@ -39,4 +39,5 @@ jobs:
         with:
           test-assembly-path: tests/specflow/MicroServices.Testing/bin/Release/net6.0
           test-assembly-dll: MicroServices.Testing.dll
-          output-html: MicroServices.Testing.html
+          output-html: MicroServices.Testing.
+          no-build: true
