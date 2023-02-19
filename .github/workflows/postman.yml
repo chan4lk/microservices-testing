@@ -49,6 +49,13 @@ jobs:
           dotnet tool install --global SpecFlow.Plus.LivingDoc.CLI
           livingdoc test-assembly ${{ env.TEST_DLL }} -t ${{ env.TEST_JSON }} -o ${{ env.TEST_OUTPUT}}
 
+      - name: Test Report
+        if: success() || failure()
+        run: |
+          cd tests/specflow/MicroServices.Testing
+          dotnet tool install --global SpecFlow.Plus.LivingDoc.CLI
+          livingdoc test-assembly ${{ env.TEST_DLL }} -t ${{ env.TEST_JSON }} -o ${{ env.TEST_OUTPUT}}
+
       - name: Publish Specflow Test Logs
         if: success() || failure()
         uses: actions/upload-artifact@v2
