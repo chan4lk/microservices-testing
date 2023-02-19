@@ -55,4 +55,4 @@ jobs:
         with:
           name: SpecflowLogs
           path: |
-            tests/specflow/MicroServices.Testing/${{ env.TEST_OUTPUT}}
+            **/${{ env.TEST_OUTPUT}}
