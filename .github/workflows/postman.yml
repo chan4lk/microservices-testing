@@ -5,7 +5,7 @@ on: push
 # Environment variables available to all jobs and steps in this workflow
 env:
   TEST_DLL: "tests/specflow/MicroServices.Testing/bin/Debug/net6.0/MicroServices.Testing.dll"
-  TEST_JSON: "tests/specflow/MicroServices.Testing/bin/Debug/net6.0/TestExecution.dll"
+  TEST_JSON: "tests/specflow/MicroServices.Testing/bin/Debug/net6.0/TestExecution.json"
   TEST_OUTPUT: "tests/specflow/MicroServices.Testing/bin/Debug/net6.0/MicroServices.Testing.html"
   Configuration: "Debug"
 
