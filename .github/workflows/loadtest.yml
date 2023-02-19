@@ -19,3 +19,5 @@ jobs:
         uses: grafana/k6-action@v0.2.0
         with:
           filename: tests/k6/test.js
+          cloud: true
+          token: ${{ secrets.K6_TOKEN }}
