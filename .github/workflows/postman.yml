@@ -7,6 +7,7 @@ env:
   TEST_DLL: "tests/specflow/MicroServices.Testing/bin/Debug/net6.0/MicroServices.Testing.dll"
   TEST_JSON: "tests/specflow/MicroServices.Testing/bin/Debug/net6.0/TestExecution.dll"
   TEST_OUTPUT: "MicroServices.Testing.html"
+  Configuration: "Debug"
 
 jobs:
   automated-postman-tests:
