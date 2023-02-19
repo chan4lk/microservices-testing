@@ -30,6 +30,11 @@ jobs:
           cd tests/specflow/MicroServices.Testing
           dotnet restore
 
+      - name: Build
+        run: |
+          cd tests/specflow/MicroServices.Testing
+          dotnet build --configuration Debug --no-restore
+       
       - uses:  cryptic-wizard/run-specflow-tests@v1.3.1
         with:
           test-assembly-dll: tests/specflow/MicroServices.Testing/bin/Debug/net6.0/MicroServices.Testing.dll
@@ -37,9 +42,11 @@ jobs:
           output-html: MicroServices.Testing.html
           framework: net6.0
           configuration: 'Debug'
+          no-build: true
           logger: trx
           logger-file-name: ../../MicroServicesResults.trx
-          
+          upload-artifact: true
+
       - name: Publish Specflow Test Logs
         if: success() || failure()
         uses: actions/upload-artifact@v2
