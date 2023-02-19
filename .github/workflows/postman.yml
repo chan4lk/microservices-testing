@@ -2,6 +2,12 @@ name: Automated API tests using Postman CLI
 
 on: push
 
+# Environment variables available to all jobs and steps in this workflow
+env:
+  TEST_DLL: "tests/specflow/MicroServices.Testing/bin/Debug/net6.0/MicroServices.Testing.dll"
+  TEST_JSON: "tests/specflow/MicroServices.Testing/bin/Debug/net6.0/TestExecution.dll"
+  TEST_OUTPUT: "MicroServices.Testing.html"
+
 jobs:
   automated-postman-tests:
     runs-on: ubuntu-latest
@@ -33,19 +39,14 @@ jobs:
       - name: Build
         run: |
           cd tests/specflow/MicroServices.Testing
-          dotnet build --configuration Debug --no-restore
-       
-      - uses:  cryptic-wizard/run-specflow-tests@v1.3.1
-        with:
-          test-assembly-dll: tests/specflow/MicroServices.Testing/bin/Debug/net6.0/MicroServices.Testing.dll
-          test-execution-json: tests/specflow/MicroServices.Testing/bin/Debug/net6.0/TestExecution.json
-          output-html: MicroServices.Testing.html
-          framework: net6.0
-          configuration: 'Debug'
-          no-build: true
-          logger: trx
-          logger-file-name: ../../MicroServicesResults.trx
-          upload-artifact: true
+          dotnet build --configuration ${{ env.Configuration }} --no-restore
+
+      - name: Test
+        run: |
+          cd tests/specflow/MicroServices.Testing
+          dotnet test --no-build --configuration ${{ env.Configuration }}
+          dotnet tool install --global SpecFlow.Plus.LivingDoc.CLI
+          livingdoc test-assembly ${{ env.TEST_DLL }} -t ${{ env.TEST_JSON }} -o ${{ env.TEST_OUTPUT}}
 
       - name: Publish Specflow Test Logs
         if: success() || failure()
@@ -53,4 +54,4 @@ jobs:
         with:
           name: SpecflowLogs
           path: |
-            MicroServicesResults.trx
+            tests/specflow/MicroServices.Testing/bin/Debug/net6.0/MicroServicesResults.trx
