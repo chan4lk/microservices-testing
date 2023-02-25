@@ -57,9 +57,9 @@ jobs:
         id: install-kubectl
         uses: azure/setup-kubectl@v3
 
-      - name: Files
+      - name: Test
         run: |
-        ls -las
+          ls -las
 
       - name: Deploy to AKS
         id: deploy-aks
