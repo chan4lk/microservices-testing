@@ -46,20 +46,16 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Install cli
+        run: |
+          sudo az aks install-cli
+
       - name: Set AKS context
         id: set-context
         uses: azure/aks-set-context@v3
         with:
           resource-group: '${{ secrets.resource_group }}' 
           cluster-name: '${{ secrets.cluster_name }}'
-
-      # - name: Setup kubectl
-      #   id: install-kubectl
-      #   uses: azure/setup-kubectl@v3
-
-      - name: Install cli
-        run: |
-          sudo az aks install-cli
 
       - name: Deploy to AKS
         id: deploy-aks
