@@ -59,4 +59,4 @@ jobs:
         with:
           namespace: 'beta'
           manifests: |
-             k8s.yml
+             ./k8s.yml

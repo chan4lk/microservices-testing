@@ -1,0 +1,5 @@
+az ad sp create-for-rbac \
+    --name "ghActionAzureVote" \
+    --scope /subscriptions/<subscriptionId>/resourceGroups/<name> \
+    --role Contributor \
+    --sdk-auth
