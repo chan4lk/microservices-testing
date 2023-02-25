@@ -53,13 +53,13 @@ jobs:
           resource-group: '${{ secrets.resource_group }}' 
           cluster-name: '${{ secrets.cluster_name }}'
 
-      - name: Setup kubectl
-        id: install-kubectl
-        uses: azure/setup-kubectl@v3
+      # - name: Setup kubectl
+      #   id: install-kubectl
+      #   uses: azure/setup-kubectl@v3
 
-      - name: Test
+      - name: Install cli
         run: |
-          ls -las
+          az aks install-cli
 
       - name: Deploy to AKS
         id: deploy-aks
