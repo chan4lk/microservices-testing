@@ -46,7 +46,7 @@ spec:
     spec:
       containers:
       - name: emp-api
-        image: chan4lk/employee-api
+        image: localhost:5000/employee-api
         env:
         - name: NODE_ENV
           value: "production"
@@ -79,7 +79,7 @@ spec:
     spec:
       containers:
       - name: auth-api
-        image: chan4lk/auth-api
+        image: localhost:5000/auth-api
         env:
         - name: NODE_ENV
           value: "production"
