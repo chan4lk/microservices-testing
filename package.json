@@ -6,7 +6,7 @@
     "start": "env-cmd -f ./.env npx nx run-many --parallel --target=serve --projects=employee-management,auth-api",
     "build": "env-cmd -f ./.env.prod npx nx run-many --parallel --target=build --projects=employee-management,auth-api",
     "build:emp": "env-cmd -f ./.env.prod npx nx run employee-management:build",
-    "build:api": "env-cmd -f ./.env.prod npx nx run auth-api:build",
+    "build:auth": "env-cmd -f ./.env.prod npx nx run auth-api:build",
     "run-api": "env-cmd -f ./.env.prod node dist/apps/auth-api/main.js",
     "run-emp": "env-cmd -f ./.env.prod node dist/apps/employee-management/main.js",
     "start:all": "concurrently npm:run-*"

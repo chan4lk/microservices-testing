@@ -1,0 +1,26 @@
+version: "3"
+services:
+ 
+  employee-api:
+    image: chan4lk/employee-api
+    env_file:
+      - .env.prod
+    ports:
+      - "3333:3333"
+    depends_on:
+      - auth-api
+    networks:
+      - employee
+ 
+  auth-api:
+    image: chan4lk/auth-api
+    env_file:
+      - .env
+    ports:
+      - "33334:3334"
+    networks:
+      - employee
+
+networks:
+  employee:
+    driver: bridge
