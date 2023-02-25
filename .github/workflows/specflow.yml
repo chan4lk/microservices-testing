@@ -1,0 +1,59 @@
+name: Automated API tests using Specflow
+
+on: push
+
+permissions:
+  checks: write
+  pull-requests: write
+  
+# Environment variables available to all jobs and steps in this workflow
+env:
+  TEST_DLL: "tests/specflow/MicroServices.Testing/bin/Debug/net6.0/MicroServices.Testing.dll"
+  TEST_JSON: "tests/specflow/MicroServices.Testing/bin/Debug/net6.0/TestExecution.json"
+  TEST_OUTPUT: "MicroServices.Testing.html"
+  Configuration: "Debug"
+
+jobs:
+  automated-specflow-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Install dependencies
+        run: |
+          cd tests/specflow/MicroServices.Testing
+          dotnet restore
+
+      - name: Build
+        run: |
+          cd tests/specflow/MicroServices.Testing
+          dotnet build --configuration ${{ env.Configuration }} --no-restore
+
+      - name: Test
+        run: |
+          cd tests/specflow/MicroServices.Testing
+          dotnet test --no-build --configuration ${{ env.Configuration }} -l:trx
+         
+      - name: Test Report
+        if: success() || failure()
+        run: |
+          dotnet tool install --global SpecFlow.Plus.LivingDoc.CLI
+          livingdoc test-assembly ${{ env.TEST_DLL }} -t ${{ env.TEST_JSON }} -o ${{ env.TEST_OUTPUT}}
+
+      - name: Publish Specflow Test Logs
+        if: success() || failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: SpecflowLogs
+          path: |
+            ${{ env.TEST_OUTPUT}}
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: |
+            tests/specflow/MicroServices.Testing/**/*.trx
