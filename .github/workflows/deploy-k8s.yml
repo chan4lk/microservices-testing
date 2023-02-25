@@ -64,3 +64,4 @@ jobs:
           namespace: 'beta'
           manifests: |
              aks.yaml
+             aks-gateway.yaml
