@@ -59,7 +59,7 @@ jobs:
 
       - name: Install cli
         run: |
-          az aks install-cli
+          sudo az aks install-cli
 
       - name: Deploy to AKS
         id: deploy-aks
