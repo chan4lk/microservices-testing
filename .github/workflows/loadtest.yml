@@ -1,9 +1,6 @@
 name: Automated Performance tests using K6
 
 on: 
-    push:
-      branches: ["main"]
-
     workflow_dispatch:
   
 # Environment variables available to all jobs and steps in this workflow
@@ -12,7 +9,6 @@ env:
   API_HOST: "20.237.23.60"
 jobs:
   k6_load_test:
-    needs: ci
     name: k6 Load Test
     runs-on: ubuntu-latest
 

@@ -1,9 +1,6 @@
 name: Automated API tests using Postman CLI
 
-on: 
-    push:
-      branches: ["main"]
-
+on:
     workflow_dispatch:
 
 permissions:
@@ -20,7 +17,6 @@ env:
 
 jobs:
   automated-postman-tests:
-    needs: ci
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -32,4 +28,4 @@ jobs:
       - name: Run API tests
         run: |
           cd ./tests/postman
-          postman collection run "./api.postman_collection.json" -e "./api.postman_environment.json" --env-var baseUrl="http://${{API_HOST}}"
+          postman collection run "./api.postman_collection.json" -e "./api.postman_environment.json" --env-var baseUrl="http://${{ env.API_HOST }}"
