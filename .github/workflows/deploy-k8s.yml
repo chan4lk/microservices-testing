@@ -6,6 +6,10 @@ on:
 
     workflow_dispatch:
 
+permissions:
+  checks: write
+  pull-requests: write
+
 # Environment variables available to all jobs and steps in this workflow
 env:
   TEST_DLL: "tests/specflow/MicroServices.Testing/bin/Debug/net6.0/MicroServices.Testing.dll"
