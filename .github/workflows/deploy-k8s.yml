@@ -59,7 +59,7 @@ jobs:
           
       - name: Get credentials
         run: |
-          az aks get-credentials --resource-group ${{ secrets.resource_group }} --name ${{ secrets.cluster_name }}
+          az aks get-credentials --resource-group ${{ secrets.resource_group }} --name ${{ secrets.cluster_name }} --overwrite-existing --admin
 
       - name: Deploy to AKS
         id: deploy-aks
