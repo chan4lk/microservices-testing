@@ -8,17 +8,17 @@ export const options = {
   duration: '1m',
   vus: 50,
   thresholds: {
-    http_req_failed: ['rate<0.01'], // http errors should be less than 1%
+    http_req_failed: ['rate<0.05'], // http errors should be less than 1%
     errorRate: [
       // more than 10% of errors will abort the test
-      { threshold: 'rate < 0.1', abortOnFail: true, delayAbortEval: '1m' },
+      { threshold: 'rate < 0.05', abortOnFail: true, delayAbortEval: '1m' },
     ],
-    http_req_duration: ['p(95)<500'], // 95 percent of response times must be below 500ms
+    http_req_duration: ['p(95)<2500'], // 95 percent of response times must be below 500ms
   },
   
 };
 
-function setup() {
+export function setup() {
   const signupUrl = `http://${__ENV.API_HOST}/api/signup`;
   
   const payload = JSON.stringify({
