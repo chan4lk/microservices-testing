@@ -8,9 +8,10 @@ spec:
     app: emp-api
   ports:
     - protocol: TCP
-      port: 3333
+      port: 80
       targetPort: 3333
-
+  type: LoadBalancer
+  
 ---
 
 apiVersion: v1
