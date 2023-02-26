@@ -56,6 +56,10 @@ jobs:
         with:
           resource-group: '${{ secrets.resource_group }}' 
           cluster-name: '${{ secrets.cluster_name }}'
+          
+      - name: Get credentials
+        run: |
+          az aks get-credentials --resource-group ${{ secrets.resource_group }} --name ${{ secrets.cluster_name }}
 
       - name: Deploy to AKS
         id: deploy-aks
