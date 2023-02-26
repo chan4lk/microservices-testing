@@ -11,6 +11,7 @@ export const options = {
 };
 
 export default function () {
-  const res = http.get('http://20.195.32.223/api/data');
+  const url = `http://${__ENV.API_HOST}/api/data`;
+  const res = http.get(url);
   sleep(1);
 }

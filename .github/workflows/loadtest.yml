@@ -9,9 +9,10 @@ on:
 # Environment variables available to all jobs and steps in this workflow
 env:
   Configuration: "Debug"
-
+  API_HOST: "20.237.23.60"
 jobs:
   k6_load_test:
+    needs: ci
     name: k6 Load Test
     runs-on: ubuntu-latest
 

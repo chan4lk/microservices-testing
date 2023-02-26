@@ -16,9 +16,11 @@ env:
   TEST_JSON: "tests/specflow/MicroServices.Testing/bin/Debug/net6.0/TestExecution.json"
   TEST_OUTPUT: "MicroServices.Testing.html"
   Configuration: "Debug"
+  API_HOST: "20.237.23.60"
 
 jobs:
   automated-specflow-tests:
+    needs: ci
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

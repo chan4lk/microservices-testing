@@ -20,7 +20,8 @@ namespace MicroServices.Testing.StepDefinitions
             .AddEnvironmentVariables()
         .Build();
       }
-      authApi = RestService.For<IAuthApi>(config["BaseUrl"] ?? "http://20.195.32.223");
+      var apiHost = config["API_HOST"] ?? "localhost:3333";
+      authApi = RestService.For<IAuthApi>($"http://{apiHost}");
       this.context = context;
     }
 
