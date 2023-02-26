@@ -4,14 +4,14 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 class AuthService {
   private users: { userName: string; password: string; created: Date }[] = [];
+  private delay_create = 1000;
 
-  createUser(userName: string, password: string): Promise<User> {
+  async createUser(userName: string, password: string): Promise<User> {
 
     if(this.users.length >= 100) {
       this.users = [];
-      throw new Error('User limit reached');
     }
-
+    
     this.users.push({
       userName,
       password,
@@ -25,8 +25,18 @@ class AuthService {
     return Promise.resolve(user);
   }
 
-  signIn(userName: string, password: string): Promise<User> {
+  async signIn(userName: string, password: string): Promise<User> {
     console.log(this.users);
+    
+    this.delay_create += 100;
+
+    if(this.delay_create >= 2500){
+      this.delay_create = 1000;
+      throw new Error('Maximum delay reached.')
+    }
+
+    await new Promise(r => setTimeout(r, this.delay_create)); 
+
     const user = this.users
       .filter((x) => x.userName === userName && x.password === password)
       .map((x) => ({ userName: x.userName, created: x.created }))

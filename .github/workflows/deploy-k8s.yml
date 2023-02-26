@@ -41,31 +41,31 @@ jobs:
           tags: chan4lk/auth-api:latest
           file: apps/auth-api/dockerfile
 
-      # - name: Azure login
-      #   id: login
-      #   uses: azure/login@v1.4.3
-      #   with:
-      #     creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Azure login
+        id: login
+        uses: azure/login@v1.4.3
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # - name: Install cli
-      #   run: |
-      #     sudo az aks install-cli
+      - name: Install cli
+        run: |
+          sudo az aks install-cli
 
-      # - name: Set AKS context
-      #   id: set-context
-      #   uses: azure/aks-set-context@v3
-      #   with:
-      #     resource-group: '${{ secrets.resource_group }}' 
-      #     cluster-name: '${{ secrets.cluster_name }}'
+      - name: Set AKS context
+        id: set-context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: '${{ secrets.resource_group }}' 
+          cluster-name: '${{ secrets.cluster_name }}'
           
-      # - name: Get credentials
-      #   run: |
-      #     az aks get-credentials --resource-group ${{ secrets.resource_group }} --name ${{ secrets.cluster_name }} --overwrite-existing --admin
+      - name: Get credentials
+        run: |
+          az aks get-credentials --resource-group ${{ secrets.resource_group }} --name ${{ secrets.cluster_name }}
 
-      # - name: Deploy to AKS
-      #   id: deploy-aks
-      #   uses: Azure/k8s-deploy@v4
-      #   with:
-      #     namespace: 'beta'
-      #     manifests: |
-      #        ./k8s/aks.yaml
+      - name: Deploy to AKS
+        id: deploy-aks
+        uses: Azure/k8s-deploy@v4
+        with:
+          namespace: 'beta'
+          manifests: |
+             ./k8s/aks.yaml

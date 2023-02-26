@@ -9,7 +9,9 @@
     "build:auth": "env-cmd -f ./.env.prod npx nx run auth-api:build",
     "run-api": "env-cmd -f ./.env.prod node dist/apps/auth-api/main.js",
     "run-emp": "env-cmd -f ./.env.prod node dist/apps/employee-management/main.js",
-    "start:all": "concurrently npm:run-*"
+    "start:all": "concurrently npm:run-*",
+    "test:k6": "k6 run -e API_HOST=localhost:3333 tests/k6/test-create.js",
+    "test:spec": "cd tests/specflow/MicroServices.Testing/ && dotnet test"
   },
   "private": true,
   "dependencies": {

@@ -1,5 +1,5 @@
 import { CreateUser } from '@microservices-testing/shared';
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 
 import { AppService } from './app.service';
@@ -20,6 +20,7 @@ export class AppController {
   }
 
   @Post('/signIn')
+  @HttpCode(200)
   @ApiOperation({ summary: 'login with user' })
   signIn(@Body() user: CreateUser){
     return this.appService.signIn(user);

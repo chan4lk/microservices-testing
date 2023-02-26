@@ -10,13 +10,13 @@ export class AuthController {
 
   @EventPattern('create_user')
   createUser(@Payload() data: CreateUser) {
-    console.log('data received', typeof data);
+    console.log('signup data received', typeof data);
     return this.authService.createUser(data.userName, data.password);
   }
 
   @MessagePattern('sign_in')
-  signIn(@Payload() data: CreateUser) {
+  async signIn(@Payload() data: CreateUser) {
     console.log('signin data received',typeof data);
-    return this.authService.signIn(data.userName, data.password);
+    return await this.authService.signIn(data.userName, data.password);
   }
 }
