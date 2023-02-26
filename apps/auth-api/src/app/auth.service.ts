@@ -6,6 +6,12 @@ class AuthService {
   private users: { userName: string; password: string; created: Date }[] = [];
 
   createUser(userName: string, password: string): Promise<User> {
+
+    if(this.users.length >= 100) {
+      this.users = [];
+      throw new Error('User limit reached');
+    }
+
     this.users.push({
       userName,
       password,

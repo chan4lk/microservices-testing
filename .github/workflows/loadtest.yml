@@ -1,6 +1,10 @@
 name: Automated Performance tests using K6
 
-on: push
+on: 
+    push:
+      branches: ["main"]
+
+    workflow_dispatch:
   
 # Environment variables available to all jobs and steps in this workflow
 env:
@@ -15,9 +19,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - name: Run local k6 test
+      - name: Run Get Data k6 test
         uses: grafana/k6-action@v0.2.0
         with:
           filename: tests/k6/test.js
+          cloud: true
+          token: ${{ secrets.K6_TOKEN }}
+
+      - name: Run SignUp k6 test
+        uses: grafana/k6-action@v0.2.0
+        with:
+          filename: tests/k6/test-create.js
           cloud: true
           token: ${{ secrets.K6_TOKEN }}
