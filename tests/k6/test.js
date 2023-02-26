@@ -11,6 +11,6 @@ export const options = {
 };
 
 export default function () {
-  const res = http.get('http://localhost:3333/api/data');
+  const res = http.get('http://20.195.32.223/api/data');
   sleep(1);
 }
