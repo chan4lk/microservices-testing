@@ -122,7 +122,7 @@ jobs:
       - name: Run API tests
         run: |
           cd ./tests/postman
-          postman collection run "./api.postman_collection.json" -e "./api.postman_environment.json" --env-var baseUrl="http://${{ env.API_HOST }}" --env-var APISERVER="${{ env.APISERVER }}" --env-var access_token="${{ env.access_token }}"
+          postman collection run "./api.postman_collection.json" --insecure -e "./api.postman_environment.json" --env-var baseUrl="http://${{ env.API_HOST }}" --env-var APISERVER="${{ env.APISERVER }}" --env-var access_token="${{ env.access_token }}"
 
   automated-specflow-tests:
     needs: deploy
