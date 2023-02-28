@@ -17,7 +17,6 @@ const params = {
 
 export const options = {
   stages: [
-    { duration: '30s', target: 50 }, // ramp up to 400 users
     { duration: '30s', target: 50 }, // stay at 400 for 30 seconds
     { duration: '30s', target: 0 }, // scale down. (optional)
   ],
