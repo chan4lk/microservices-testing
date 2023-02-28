@@ -1,11 +1,12 @@
 import { User } from '@microservices-testing/shared';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 class AuthService {
   private users: { userName: string; password: string; created: Date }[] = [];
   private delay_create = 100;
   private delay = 100;
+  private readonly logger = new Logger(AuthService.name);
 
   constructor() {
     this.delay_create = this.delay = parseInt(process.env.API_DELAY) || 100;
@@ -23,7 +24,7 @@ class AuthService {
       created: new Date(),
     });
 
-    console.log("Created user with username :" + userName);
+    this.logger.log("Created user with username :" + userName);
 
     const user = this.users
       .filter((x) => x.userName === userName)
@@ -49,7 +50,7 @@ class AuthService {
       .map((x) => ({ userName: x.userName, created: x.created }))
       .find((x) => x.userName === userName);
 
-    console.log("found user with username :" + userName);
+      this.logger.log("found user with username :" + userName);
 
     return Promise.resolve(user);
   }
