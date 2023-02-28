@@ -16,8 +16,11 @@ const params = {
 };
 
 export const options = {
-  duration: '1m',
-  vus: 50,
+  stages: [
+    { duration: '30s', target: 400 }, // ramp up to 400 users
+    { duration: '30s', target: 400 }, // stay at 400 for 30 seconds
+    { duration: '30s', target: 0 }, // scale down. (optional)
+  ],
   thresholds: {
     http_req_failed: ['rate<0.08'], // http errors should be less than 8%
     errorRate: [
