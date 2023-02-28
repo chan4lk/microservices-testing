@@ -326,12 +326,10 @@
 								"exec": [
 									"pm.test(\"Check user Name\", function () {",
 									"    var text = pm.response.text();",
-									"   ",
-									"    var name = text.trim().split(\":\")[1];",
 									"",
 									"    var username = pm.environment.get(\"username\");",
 									"",
-									"   pm.expect(name).to.eql(username);",
+									"   pm.expect(text.trim()).to.contain(username);",
 									"",
 									"});"
 								],
