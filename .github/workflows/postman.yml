@@ -9,11 +9,9 @@ permissions:
   
 # Environment variables available to all jobs and steps in this workflow
 env:
-  TEST_DLL: "tests/specflow/MicroServices.Testing/bin/Debug/net6.0/MicroServices.Testing.dll"
-  TEST_JSON: "tests/specflow/MicroServices.Testing/bin/Debug/net6.0/TestExecution.json"
-  TEST_OUTPUT: "MicroServices.Testing.html"
-  Configuration: "Debug"
-  API_HOST: "20.237.23.60"
+  API_HOST: "${{ secrets.HOST }}"
+  APISERVER: "${{ secrets.KUBERNETES_API_SERVER_URL}}"
+  access_token: "${{ secrets.KUBERNETES_API_SERVER_TOKEN}}"
 
 jobs:
   automated-postman-tests:
@@ -28,4 +26,4 @@ jobs:
       - name: Run API tests
         run: |
           cd ./tests/postman
-          postman collection run "./api.postman_collection.json" -e "./api.postman_environment.json" --env-var baseUrl="http://${{ env.API_HOST }}"
+          postman collection run "./api.postman_collection.json" -e "./api.postman_environment.json" --env-var baseUrl="http://${{ env.API_HOST }}" --env-var APISERVER="${{ env.APISERVER }}" --env-var access_token="${{ env.access_token }}"

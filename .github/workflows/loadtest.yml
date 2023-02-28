@@ -6,7 +6,7 @@ on:
 # Environment variables available to all jobs and steps in this workflow
 env:
   Configuration: "Debug"
-  API_HOST: "20.237.23.60"
+  API_HOST: "${{ secrets.HOST }}"
 jobs:
   k6_load_test:
     name: k6 Load Test

@@ -19,12 +19,12 @@ export const options = {
   duration: '1m',
   vus: 50,
   thresholds: {
-    http_req_failed: ['rate<0.08'], // http errors should be less than 1%
+    http_req_failed: ['rate<0.08'], // http errors should be less than 8%
     errorRate: [
-      // more than 10% of errors will abort the test
+      // more than 8% of errors will abort the test
       { threshold: 'rate < 0.08', abortOnFail: true, delayAbortEval: '1m' },
     ],
-    http_req_duration: ['p(95)<2500'], // 95 percent of response times must be below 500ms
+    http_req_duration: ['p(95)<2500'], // 95 percent of response times must be below 2500ms
   },
 };
 

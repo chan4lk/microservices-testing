@@ -23,6 +23,8 @@ class AuthService {
       created: new Date(),
     });
 
+    console.log("Created user with username :" + userName);
+
     const user = this.users
       .filter((x) => x.userName === userName)
       .map((x) => ({ userName: x.userName, created: x.created }))
@@ -32,7 +34,6 @@ class AuthService {
   }
 
   async signIn(userName: string, password: string): Promise<User> {
-    console.log(this.users);
     
     this.delay_create += 100;
 
@@ -47,6 +48,9 @@ class AuthService {
       .filter((x) => x.userName === userName && x.password === password)
       .map((x) => ({ userName: x.userName, created: x.created }))
       .find((x) => x.userName === userName);
+
+    console.log("found user with username :" + userName);
+
     return Promise.resolve(user);
   }
 }

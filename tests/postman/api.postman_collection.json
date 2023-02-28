@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1ec96ba6-4aaf-4710-9fb6-2f4a116700c7",
+		"_postman_id": "10d38b30-c603-4f21-bb22-a7739c85620e",
 		"name": "Data example",
 		"description": "The API description",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -12,6 +12,19 @@
 			"item": [
 				{
 					"name": "App Controller get Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -28,7 +41,7 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Response",
+							"name": "App Controller get Data",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -45,20 +58,66 @@
 							},
 							"status": "OK",
 							"code": 200,
-							"_postman_previewlanguage": "text",
+							"_postman_previewlanguage": "json",
 							"header": [
 								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
 									"key": "Content-Type",
-									"value": "text/plain"
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "45"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2d-NMMmb3zhzkY9uK/1DaV2DERqggY\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 28 Feb 2023 06:54:17 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
 								}
 							],
 							"cookie": [],
-							"body": ""
+							"body": "{\n    \"message\": \"Welcome to employee-management!\"\n}"
 						}
 					]
 				},
 				{
 					"name": "Create user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", pm.variables.replaceIn('{{$randomUserName}}'));"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -69,7 +128,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": \"do et id\",\n  \"userName\": \"id eu nostrud minim\",\n  \"password\": \"eiusmod sit cupidatat\"\n}",
+							"raw": "{\n  \"id\": \"do et id\",\n  \"userName\": \"{{username}}\",\n  \"password\": \"eiusmod sit cupidatat\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -89,13 +148,18 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Response",
+							"name": "Create user",
 							"originalRequest": {
 								"method": "POST",
-								"header": [],
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"id\": \"do et id\",\n  \"userName\": \"id eu nostrud minim\",\n  \"password\": \"eiusmod sit cupidatat\"\n}",
+									"raw": "{\n  \"id\": \"do et id\",\n  \"userName\": \"{{username}}\",\n  \"password\": \"eiusmod sit cupidatat\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -115,20 +179,275 @@
 							},
 							"status": "Created",
 							"code": 201,
-							"_postman_previewlanguage": "text",
+							"_postman_previewlanguage": "plain",
 							"header": [
 								{
-									"key": "Content-Type",
-									"value": "text/plain"
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 28 Feb 2023 06:47:09 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
 								}
 							],
 							"cookie": [],
-							"body": ""
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "pods",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Set Pod Name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var items = jsonData.items;",
+									"",
+									"    var authPod = items.find(i => i.metadata.name.startsWith(\"auth-api\"))",
+									"                       .metadata.name;",
+									"",
+									"    console.log(authPod);",
+									"",
+									"",
+									"    pm.environment.set(\"pod\", authPod);",
+									"",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{APISERVER}}/api/v1/namespaces/beta/pods",
+							"host": [
+								"{{APISERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"namespaces",
+								"beta",
+								"pods"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "pods",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{APISERVER}}/api/v1/namespaces/beta/pods",
+									"host": [
+										"{{APISERVER}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"namespaces",
+										"beta",
+										"pods"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Audit-Id",
+									"value": "87593e3a-f152-4b0e-a738-94cd170eb54d"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "X-Kubernetes-Pf-Flowschema-Uid",
+									"value": "4db224c9-18f0-4380-9d51-ae3d6f003fe5"
+								},
+								{
+									"key": "X-Kubernetes-Pf-Prioritylevel-Uid",
+									"value": "4e4c2136-fe70-4f5c-8a94-b6d90df6f061"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 28 Feb 2023 06:30:28 GMT"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"kind\": \"PodList\",\n    \"apiVersion\": \"v1\",\n    \"metadata\": {\n        \"resourceVersion\": \"16215\"\n    },\n    \"items\": [\n        {\n            \"metadata\": {\n                \"name\": \"emp-api-7b5695bf78-dcbd4\",\n                \"generateName\": \"emp-api-7b5695bf78-\",\n                \"namespace\": \"beta\",\n                \"uid\": \"93a8a425-7e99-4da8-aafc-ab0cff50349e\",\n                \"resourceVersion\": \"12894\",\n                \"creationTimestamp\": \"2023-02-26T15:25:54Z\",\n                \"labels\": {\n                    \"app\": \"emp-api\",\n                    \"pod-template-hash\": \"7b5695bf78\"\n                },\n                \"ownerReferences\": [\n                    {\n                        \"apiVersion\": \"apps/v1\",\n                        \"kind\": \"ReplicaSet\",\n                        \"name\": \"emp-api-7b5695bf78\",\n                        \"uid\": \"2ea04d94-5ff2-4914-9419-9ec5e92eaad1\",\n                        \"controller\": true,\n                        \"blockOwnerDeletion\": true\n                    }\n                ],\n                \"managedFields\": [\n                    {\n                        \"manager\": \"k3s\",\n                        \"operation\": \"Update\",\n                        \"apiVersion\": \"v1\",\n                        \"time\": \"2023-02-26T15:25:54Z\",\n                        \"fieldsType\": \"FieldsV1\",\n                        \"fieldsV1\": {\n                            \"f:metadata\": {\n                                \"f:generateName\": {},\n                                \"f:labels\": {\n                                    \".\": {},\n                                    \"f:app\": {},\n                                    \"f:pod-template-hash\": {}\n                                },\n                                \"f:ownerReferences\": {\n                                    \".\": {},\n                                    \"k:{\\\"uid\\\":\\\"2ea04d94-5ff2-4914-9419-9ec5e92eaad1\\\"}\": {}\n                                }\n                            },\n                            \"f:spec\": {\n                                \"f:containers\": {\n                                    \"k:{\\\"name\\\":\\\"emp-api\\\"}\": {\n                                        \".\": {},\n                                        \"f:env\": {\n                                            \".\": {},\n                                            \"k:{\\\"name\\\":\\\"API_HOST\\\"}\": {\n                                                \".\": {},\n                                                \"f:name\": {},\n                                                \"f:value\": {}\n                                            },\n                                            \"k:{\\\"name\\\":\\\"API_PORT\\\"}\": {\n                                                \".\": {},\n                                                \"f:name\": {},\n                                                \"f:value\": {}\n                                            },\n                                            \"k:{\\\"name\\\":\\\"NODE_ENV\\\"}\": {\n                                                \".\": {},\n                                                \"f:name\": {},\n                                                \"f:value\": {}\n                                            }\n                                        },\n                                        \"f:image\": {},\n                                        \"f:imagePullPolicy\": {},\n                                        \"f:name\": {},\n                                        \"f:ports\": {\n                                            \".\": {},\n                                            \"k:{\\\"containerPort\\\":3333,\\\"protocol\\\":\\\"TCP\\\"}\": {\n                                                \".\": {},\n                                                \"f:containerPort\": {},\n                                                \"f:protocol\": {}\n                                            }\n                                        },\n                                        \"f:resources\": {},\n                                        \"f:terminationMessagePath\": {},\n                                        \"f:terminationMessagePolicy\": {}\n                                    }\n                                },\n                                \"f:dnsPolicy\": {},\n                                \"f:enableServiceLinks\": {},\n                                \"f:restartPolicy\": {},\n                                \"f:schedulerName\": {},\n                                \"f:securityContext\": {},\n                                \"f:serviceAccount\": {},\n                                \"f:serviceAccountName\": {},\n                                \"f:terminationGracePeriodSeconds\": {}\n                            }\n                        }\n                    },\n                    {\n                        \"manager\": \"k3s\",\n                        \"operation\": \"Update\",\n                        \"apiVersion\": \"v1\",\n                        \"time\": \"2023-02-28T01:51:08Z\",\n                        \"fieldsType\": \"FieldsV1\",\n                        \"fieldsV1\": {\n                            \"f:status\": {\n                                \"f:conditions\": {\n                                    \"k:{\\\"type\\\":\\\"ContainersReady\\\"}\": {\n                                        \".\": {},\n                                        \"f:lastProbeTime\": {},\n                                        \"f:lastTransitionTime\": {},\n                                        \"f:status\": {},\n                                        \"f:type\": {}\n                                    },\n                                    \"k:{\\\"type\\\":\\\"Initialized\\\"}\": {\n                                        \".\": {},\n                                        \"f:lastProbeTime\": {},\n                                        \"f:lastTransitionTime\": {},\n                                        \"f:status\": {},\n                                        \"f:type\": {}\n                                    },\n                                    \"k:{\\\"type\\\":\\\"Ready\\\"}\": {\n                                        \".\": {},\n                                        \"f:lastProbeTime\": {},\n                                        \"f:lastTransitionTime\": {},\n                                        \"f:status\": {},\n                                        \"f:type\": {}\n                                    }\n                                },\n                                \"f:containerStatuses\": {},\n                                \"f:hostIP\": {},\n                                \"f:phase\": {},\n                                \"f:podIP\": {},\n                                \"f:podIPs\": {\n                                    \".\": {},\n                                    \"k:{\\\"ip\\\":\\\"10.42.0.35\\\"}\": {\n                                        \".\": {},\n                                        \"f:ip\": {}\n                                    }\n                                },\n                                \"f:startTime\": {}\n                            }\n                        },\n                        \"subresource\": \"status\"\n                    }\n                ]\n            },\n            \"spec\": {\n                \"volumes\": [\n                    {\n                        \"name\": \"kube-api-access-9vvm6\",\n                        \"projected\": {\n                            \"sources\": [\n                                {\n                                    \"serviceAccountToken\": {\n                                        \"expirationSeconds\": 3607,\n                                        \"path\": \"token\"\n                                    }\n                                },\n                                {\n                                    \"configMap\": {\n                                        \"name\": \"kube-root-ca.crt\",\n                                        \"items\": [\n                                            {\n                                                \"key\": \"ca.crt\",\n                                                \"path\": \"ca.crt\"\n                                            }\n                                        ]\n                                    }\n                                },\n                                {\n                                    \"downwardAPI\": {\n                                        \"items\": [\n                                            {\n                                                \"path\": \"namespace\",\n                                                \"fieldRef\": {\n                                                    \"apiVersion\": \"v1\",\n                                                    \"fieldPath\": \"metadata.namespace\"\n                                                }\n                                            }\n                                        ]\n                                    }\n                                }\n                            ],\n                            \"defaultMode\": 420\n                        }\n                    }\n                ],\n                \"containers\": [\n                    {\n                        \"name\": \"emp-api\",\n                        \"image\": \"localhost:5000/employee-api\",\n                        \"ports\": [\n                            {\n                                \"containerPort\": 3333,\n                                \"protocol\": \"TCP\"\n                            }\n                        ],\n                        \"env\": [\n                            {\n                                \"name\": \"NODE_ENV\",\n                                \"value\": \"production\"\n                            },\n                            {\n                                \"name\": \"API_HOST\",\n                                \"value\": \"auth-api\"\n                            },\n                            {\n                                \"name\": \"API_PORT\",\n                                \"value\": \"3334\"\n                            }\n                        ],\n                        \"resources\": {},\n                        \"volumeMounts\": [\n                            {\n                                \"name\": \"kube-api-access-9vvm6\",\n                                \"readOnly\": true,\n                                \"mountPath\": \"/var/run/secrets/kubernetes.io/serviceaccount\"\n                            }\n                        ],\n                        \"terminationMessagePath\": \"/dev/termination-log\",\n                        \"terminationMessagePolicy\": \"File\",\n                        \"imagePullPolicy\": \"Always\"\n                    }\n                ],\n                \"restartPolicy\": \"Always\",\n                \"terminationGracePeriodSeconds\": 30,\n                \"dnsPolicy\": \"ClusterFirst\",\n                \"serviceAccountName\": \"default\",\n                \"serviceAccount\": \"default\",\n                \"nodeName\": \"lima-rancher-desktop\",\n                \"securityContext\": {},\n                \"schedulerName\": \"default-scheduler\",\n                \"tolerations\": [\n                    {\n                        \"key\": \"node.kubernetes.io/not-ready\",\n                        \"operator\": \"Exists\",\n                        \"effect\": \"NoExecute\",\n                        \"tolerationSeconds\": 300\n                    },\n                    {\n                        \"key\": \"node.kubernetes.io/unreachable\",\n                        \"operator\": \"Exists\",\n                        \"effect\": \"NoExecute\",\n                        \"tolerationSeconds\": 300\n                    }\n                ],\n                \"priority\": 0,\n                \"enableServiceLinks\": true,\n                \"preemptionPolicy\": \"PreemptLowerPriority\"\n            },\n            \"status\": {\n                \"phase\": \"Running\",\n                \"conditions\": [\n                    {\n                        \"type\": \"Initialized\",\n                        \"status\": \"True\",\n                        \"lastProbeTime\": null,\n                        \"lastTransitionTime\": \"2023-02-26T15:25:54Z\"\n                    },\n                    {\n                        \"type\": \"Ready\",\n                        \"status\": \"True\",\n                        \"lastProbeTime\": null,\n                        \"lastTransitionTime\": \"2023-02-28T01:51:08Z\"\n                    },\n                    {\n                        \"type\": \"ContainersReady\",\n                        \"status\": \"True\",\n                        \"lastProbeTime\": null,\n                        \"lastTransitionTime\": \"2023-02-28T01:51:08Z\"\n                    },\n                    {\n                        \"type\": \"PodScheduled\",\n                        \"status\": \"True\",\n                        \"lastProbeTime\": null,\n                        \"lastTransitionTime\": \"2023-02-26T15:25:54Z\"\n                    }\n                ],\n                \"hostIP\": \"192.168.1.35\",\n                \"podIP\": \"10.42.0.35\",\n                \"podIPs\": [\n                    {\n                        \"ip\": \"10.42.0.35\"\n                    }\n                ],\n                \"startTime\": \"2023-02-26T15:25:54Z\",\n                \"containerStatuses\": [\n                    {\n                        \"name\": \"emp-api\",\n                        \"state\": {\n                            \"running\": {\n                                \"startedAt\": \"2023-02-28T01:51:08Z\"\n                            }\n                        },\n                        \"lastState\": {\n                            \"terminated\": {\n                                \"exitCode\": 255,\n                                \"reason\": \"Unknown\",\n                                \"startedAt\": \"2023-02-26T15:40:22Z\",\n                                \"finishedAt\": \"2023-02-28T01:50:31Z\",\n                                \"containerID\": \"containerd://91eaaf0e260cd4ae2eea8ed4b300c132be24621d8a5324abbb7871bb8d5c4b43\"\n                            }\n                        },\n                        \"ready\": true,\n                        \"restartCount\": 2,\n                        \"image\": \"localhost:5000/employee-api:latest\",\n                        \"imageID\": \"localhost:5000/employee-api@sha256:e9d3ef9d2c0c1a169745b2a102f024ff5dd421586441426996c2df799844a846\",\n                        \"containerID\": \"containerd://adf459cafd497a9af879d9ff8cc65fa6e3b2dca4d4fee75cd58d784eb375f954\",\n                        \"started\": true\n                    }\n                ],\n                \"qosClass\": \"BestEffort\"\n            }\n        },\n        {\n            \"metadata\": {\n                \"name\": \"auth-api-647ddccd86-ssg8d\",\n                \"generateName\": \"auth-api-647ddccd86-\",\n                \"namespace\": \"beta\",\n                \"uid\": \"a0c30a23-f01c-4c93-8652-9bdf7f583c22\",\n                \"resourceVersion\": \"16182\",\n                \"creationTimestamp\": \"2023-02-28T06:28:29Z\",\n                \"labels\": {\n                    \"app\": \"auth-api\",\n                    \"pod-template-hash\": \"647ddccd86\"\n                },\n                \"ownerReferences\": [\n                    {\n                        \"apiVersion\": \"apps/v1\",\n                        \"kind\": \"ReplicaSet\",\n                        \"name\": \"auth-api-647ddccd86\",\n                        \"uid\": \"401dd9a4-77be-409e-94a9-60c7c629ef00\",\n                        \"controller\": true,\n                        \"blockOwnerDeletion\": true\n                    }\n                ],\n                \"managedFields\": [\n                    {\n                        \"manager\": \"k3s\",\n                        \"operation\": \"Update\",\n                        \"apiVersion\": \"v1\",\n                        \"time\": \"2023-02-28T06:28:29Z\",\n                        \"fieldsType\": \"FieldsV1\",\n                        \"fieldsV1\": {\n                            \"f:metadata\": {\n                                \"f:generateName\": {},\n                                \"f:labels\": {\n                                    \".\": {},\n                                    \"f:app\": {},\n                                    \"f:pod-template-hash\": {}\n                                },\n                                \"f:ownerReferences\": {\n                                    \".\": {},\n                                    \"k:{\\\"uid\\\":\\\"401dd9a4-77be-409e-94a9-60c7c629ef00\\\"}\": {}\n                                }\n                            },\n                            \"f:spec\": {\n                                \"f:containers\": {\n                                    \"k:{\\\"name\\\":\\\"auth-api\\\"}\": {\n                                        \".\": {},\n                                        \"f:env\": {\n                                            \".\": {},\n                                            \"k:{\\\"name\\\":\\\"NODE_ENV\\\"}\": {\n                                                \".\": {},\n                                                \"f:name\": {},\n                                                \"f:value\": {}\n                                            }\n                                        },\n                                        \"f:image\": {},\n                                        \"f:imagePullPolicy\": {},\n                                        \"f:name\": {},\n                                        \"f:ports\": {\n                                            \".\": {},\n                                            \"k:{\\\"containerPort\\\":3334,\\\"protocol\\\":\\\"TCP\\\"}\": {\n                                                \".\": {},\n                                                \"f:containerPort\": {},\n                                                \"f:protocol\": {}\n                                            }\n                                        },\n                                        \"f:resources\": {},\n                                        \"f:terminationMessagePath\": {},\n                                        \"f:terminationMessagePolicy\": {}\n                                    }\n                                },\n                                \"f:dnsPolicy\": {},\n                                \"f:enableServiceLinks\": {},\n                                \"f:restartPolicy\": {},\n                                \"f:schedulerName\": {},\n                                \"f:securityContext\": {},\n                                \"f:serviceAccount\": {},\n                                \"f:serviceAccountName\": {},\n                                \"f:terminationGracePeriodSeconds\": {}\n                            }\n                        }\n                    },\n                    {\n                        \"manager\": \"k3s\",\n                        \"operation\": \"Update\",\n                        \"apiVersion\": \"v1\",\n                        \"time\": \"2023-02-28T06:28:36Z\",\n                        \"fieldsType\": \"FieldsV1\",\n                        \"fieldsV1\": {\n                            \"f:status\": {\n                                \"f:conditions\": {\n                                    \"k:{\\\"type\\\":\\\"ContainersReady\\\"}\": {\n                                        \".\": {},\n                                        \"f:lastProbeTime\": {},\n                                        \"f:lastTransitionTime\": {},\n                                        \"f:status\": {},\n                                        \"f:type\": {}\n                                    },\n                                    \"k:{\\\"type\\\":\\\"Initialized\\\"}\": {\n                                        \".\": {},\n                                        \"f:lastProbeTime\": {},\n                                        \"f:lastTransitionTime\": {},\n                                        \"f:status\": {},\n                                        \"f:type\": {}\n                                    },\n                                    \"k:{\\\"type\\\":\\\"Ready\\\"}\": {\n                                        \".\": {},\n                                        \"f:lastProbeTime\": {},\n                                        \"f:lastTransitionTime\": {},\n                                        \"f:status\": {},\n                                        \"f:type\": {}\n                                    }\n                                },\n                                \"f:containerStatuses\": {},\n                                \"f:hostIP\": {},\n                                \"f:phase\": {},\n                                \"f:podIP\": {},\n                                \"f:podIPs\": {\n                                    \".\": {},\n                                    \"k:{\\\"ip\\\":\\\"10.42.0.43\\\"}\": {\n                                        \".\": {},\n                                        \"f:ip\": {}\n                                    }\n                                },\n                                \"f:startTime\": {}\n                            }\n                        },\n                        \"subresource\": \"status\"\n                    }\n                ]\n            },\n            \"spec\": {\n                \"volumes\": [\n                    {\n                        \"name\": \"kube-api-access-56z8k\",\n                        \"projected\": {\n                            \"sources\": [\n                                {\n                                    \"serviceAccountToken\": {\n                                        \"expirationSeconds\": 3607,\n                                        \"path\": \"token\"\n                                    }\n                                },\n                                {\n                                    \"configMap\": {\n                                        \"name\": \"kube-root-ca.crt\",\n                                        \"items\": [\n                                            {\n                                                \"key\": \"ca.crt\",\n                                                \"path\": \"ca.crt\"\n                                            }\n                                        ]\n                                    }\n                                },\n                                {\n                                    \"downwardAPI\": {\n                                        \"items\": [\n                                            {\n                                                \"path\": \"namespace\",\n                                                \"fieldRef\": {\n                                                    \"apiVersion\": \"v1\",\n                                                    \"fieldPath\": \"metadata.namespace\"\n                                                }\n                                            }\n                                        ]\n                                    }\n                                }\n                            ],\n                            \"defaultMode\": 420\n                        }\n                    }\n                ],\n                \"containers\": [\n                    {\n                        \"name\": \"auth-api\",\n                        \"image\": \"localhost:5000/auth-api\",\n                        \"ports\": [\n                            {\n                                \"containerPort\": 3334,\n                                \"protocol\": \"TCP\"\n                            }\n                        ],\n                        \"env\": [\n                            {\n                                \"name\": \"NODE_ENV\",\n                                \"value\": \"production\"\n                            }\n                        ],\n                        \"resources\": {},\n                        \"volumeMounts\": [\n                            {\n                                \"name\": \"kube-api-access-56z8k\",\n                                \"readOnly\": true,\n                                \"mountPath\": \"/var/run/secrets/kubernetes.io/serviceaccount\"\n                            }\n                        ],\n                        \"terminationMessagePath\": \"/dev/termination-log\",\n                        \"terminationMessagePolicy\": \"File\",\n                        \"imagePullPolicy\": \"Always\"\n                    }\n                ],\n                \"restartPolicy\": \"Always\",\n                \"terminationGracePeriodSeconds\": 30,\n                \"dnsPolicy\": \"ClusterFirst\",\n                \"serviceAccountName\": \"default\",\n                \"serviceAccount\": \"default\",\n                \"nodeName\": \"lima-rancher-desktop\",\n                \"securityContext\": {},\n                \"schedulerName\": \"default-scheduler\",\n                \"tolerations\": [\n                    {\n                        \"key\": \"node.kubernetes.io/not-ready\",\n                        \"operator\": \"Exists\",\n                        \"effect\": \"NoExecute\",\n                        \"tolerationSeconds\": 300\n                    },\n                    {\n                        \"key\": \"node.kubernetes.io/unreachable\",\n                        \"operator\": \"Exists\",\n                        \"effect\": \"NoExecute\",\n                        \"tolerationSeconds\": 300\n                    }\n                ],\n                \"priority\": 0,\n                \"enableServiceLinks\": true,\n                \"preemptionPolicy\": \"PreemptLowerPriority\"\n            },\n            \"status\": {\n                \"phase\": \"Running\",\n                \"conditions\": [\n                    {\n                        \"type\": \"Initialized\",\n                        \"status\": \"True\",\n                        \"lastProbeTime\": null,\n                        \"lastTransitionTime\": \"2023-02-28T06:28:29Z\"\n                    },\n                    {\n                        \"type\": \"Ready\",\n                        \"status\": \"True\",\n                        \"lastProbeTime\": null,\n                        \"lastTransitionTime\": \"2023-02-28T06:28:36Z\"\n                    },\n                    {\n                        \"type\": \"ContainersReady\",\n                        \"status\": \"True\",\n                        \"lastProbeTime\": null,\n                        \"lastTransitionTime\": \"2023-02-28T06:28:36Z\"\n                    },\n                    {\n                        \"type\": \"PodScheduled\",\n                        \"status\": \"True\",\n                        \"lastProbeTime\": null,\n                        \"lastTransitionTime\": \"2023-02-28T06:28:29Z\"\n                    }\n                ],\n                \"hostIP\": \"192.168.1.35\",\n                \"podIP\": \"10.42.0.43\",\n                \"podIPs\": [\n                    {\n                        \"ip\": \"10.42.0.43\"\n                    }\n                ],\n                \"startTime\": \"2023-02-28T06:28:29Z\",\n                \"containerStatuses\": [\n                    {\n                        \"name\": \"auth-api\",\n                        \"state\": {\n                            \"running\": {\n                                \"startedAt\": \"2023-02-28T06:28:36Z\"\n                            }\n                        },\n                        \"lastState\": {},\n                        \"ready\": true,\n                        \"restartCount\": 0,\n                        \"image\": \"localhost:5000/auth-api:latest\",\n                        \"imageID\": \"localhost:5000/auth-api@sha256:62c79b348879bc65caf7b26edf92861033542a769a5a4f57c514cd212514c156\",\n                        \"containerID\": \"containerd://fdece98cea1607f903cbec195567945ec029a6586283317fea38f93d32200733\",\n                        \"started\": true\n                    }\n                ],\n                \"qosClass\": \"BestEffort\"\n            }\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "logs since",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check user Name\", function () {",
+									"    var text = pm.response.text();",
+									"   ",
+									"    var name = text.trim().split(\":\")[1];",
+									"",
+									"    var username = pm.environment.get(\"username\");",
+									"",
+									"   pm.expect(name).to.eql(username);",
+									"",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{APISERVER}}/api/v1/namespaces/beta/pods/{{pod}}/log?tailLines=1",
+							"host": [
+								"{{APISERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"namespaces",
+								"beta",
+								"pods",
+								"{{pod}}",
+								"log"
+							],
+							"query": [
+								{
+									"key": "tailLines",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "logs since",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{APISERVER}}/api/v1/namespaces/beta/pods/{{pod}}/log?tailLines=1",
+									"host": [
+										"{{APISERVER}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"namespaces",
+										"beta",
+										"pods",
+										"{{pod}}",
+										"log"
+									],
+									"query": [
+										{
+											"key": "tailLines",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Audit-Id",
+									"value": "4391d29f-6d18-44b2-9dcc-12427785e4de"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 28 Feb 2023 06:38:33 GMT"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "Created user with username :Reuben_Ortiz\n"
 						}
 					]
 				},
 				{
 					"name": "login with user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.userName).to.eql(pm.environment.get('username'));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -139,7 +458,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": \"do et id\",\n  \"userName\": \"id eu nostrud minim\",\n  \"password\": \"eiusmod sit cupidatat\"\n}",
+							"raw": "{\n  \"userName\": \"{{username}}\",\n  \"password\": \"eiusmod sit cupidatat\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -159,13 +478,18 @@
 					},
 					"response": [
 						{
-							"name": "Untitled Response",
+							"name": "login with user",
 							"originalRequest": {
 								"method": "POST",
-								"header": [],
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"id\": \"do et id\",\n  \"userName\": \"id eu nostrud minim\",\n  \"password\": \"eiusmod sit cupidatat\"\n}",
+									"raw": "{\n  \"userName\": \"{{username}}\",\n  \"password\": \"eiusmod sit cupidatat\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -183,19 +507,76 @@
 									]
 								}
 							},
-							"status": "Created",
-							"code": 201,
-							"_postman_previewlanguage": "text",
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
 							"header": [
 								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
 									"key": "Content-Type",
-									"value": "text/plain"
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "64"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"40-HQmZhcMtQz0/CeTSj2d9/seyp6I\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 28 Feb 2023 06:43:45 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
 								}
 							],
 							"cookie": [],
-							"body": ""
+							"body": "{\n    \"userName\": \"Reuben_Ortiz\",\n    \"created\": \"2023-02-28T06:38:10.446Z\"\n}"
 						}
 					]
+				},
+				{
+					"name": "logs",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{APISERVER}}/api/v1/namespaces/beta/pods/{{pod}}/log",
+							"host": [
+								"{{APISERVER}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"namespaces",
+								"beta",
+								"pods",
+								"{{pod}}",
+								"log"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
